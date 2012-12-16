@@ -11,17 +11,34 @@
 # Bundle filename pattern "<repository_name>_YYYYmmdd-HHMMSS.bundle"
 #
 
-BACKUP_REPOS_BASEDIR=${1:-"."}
-BACKUP_DIR=${2:-"$HOME/backup"}
+if [ $# -lt 1 ]; then
+	echo "Usage: $0 <repository_dir> [<backup_dir>]"
+	exit 0
+fi
 
+BACKUP_REPOS_BASEDIR=$1
+BACKUP_DIR=${2:-"$HOME/backup"}
 BACKUP_TAG="lastBackup"
 
+if [ ! -d ${BACKUP_REPOS_BASEDIR} ]; then
+	echo "ERROR: ${BACKUP_REPOS_BASEDIR} is not a directory"
+	exit 1
+fi
+
+if [ ! -d ${BACKUP_DIR} ]; then
+        echo "ERROR: ${BACKUP_DIR} is not a directory"
+        exit 1
+fi
+
+echo "INFO: Using ${BACKUP_DIR} as backup destination directory"
+
+# find git repositories (contain .git dir)
 find ${BACKUP_REPOS_BASEDIR} -maxdepth 2 -type d -name '.git' | while read repoDir
 do
 	dir=`dirname ${repoDir}`
 	repoName=`basename ${dir}`
 
-	echo "Processing ${repoName}..."
+	echo "INFO: processing ${repoName}..."
 
 	datetime=`date +%Y%m%d-%H%M%S`
 	fileName="${BACKUP_DIR}/${repoName}_${datetime}.bundle"

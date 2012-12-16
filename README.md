@@ -16,7 +16,8 @@ backup-git.sh ~/projects /backup
 
 Restore
 ----------
-Restore a repository named `repository` into `/tmp/git/repository`:
+Restore a repository named `repository` into `/tmp/git/repository`.
+The script shall be run in the directory containing `repository_*.bundle` files:
 
 ```
 backup-git-restore.sh /tmp/git repository
@@ -27,7 +28,7 @@ Testing
 The simplified test suite clones a repository from a bundle file, 
 simulates a few commits and runs the backup after every single commit.
 
-Afterwards the repository is restored from the multiple bundle files.
+Afterwards the repository is restored from multiple bundle files.
 
 ```
 cd test
