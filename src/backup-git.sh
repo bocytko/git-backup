@@ -33,7 +33,7 @@ fi
 echo "INFO: Using ${BACKUP_DIR} as backup destination directory"
 
 # find git repositories (contain .git dir)
-find ${BACKUP_REPOS_BASEDIR} -maxdepth 2 -type d -name '.git' | while read repoDir
+find ${BACKUP_REPOS_BASEDIR} -maxdepth 2 -type d -name '*.git' | while read repoDir
 do
 	dir=`dirname ${repoDir}`
 	repoName=`basename ${dir}`
