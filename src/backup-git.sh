@@ -33,15 +33,16 @@ fi
 echo "INFO: Using ${BACKUP_DIR} as backup destination directory"
 
 # find git repositories (contain .git dir)
-find ${BACKUP_REPOS_BASEDIR} -maxdepth 2 -type d -name '.git' | while read repoDir
+find ${BACKUP_REPOS_BASEDIR} -maxdepth 2 -type d -name '*.git' | while read repoDir
 do
 	dir=`dirname ${repoDir}`
 	repoName=`basename ${dir}`
 
 	echo "INFO: processing ${repoName}..."
 
+	repoFileName=`basename ${repoDir}`
 	datetime=`date +%Y%m%d-%H%M%S`
-	fileName="${BACKUP_DIR}/${repoName}_${datetime}.bundle"
+	fileName="${BACKUP_DIR}/${datetime}_${repoFileName}.bundle"
 
 	oldDir=`pwd`
 
@@ -50,8 +51,8 @@ do
 	echo "INFO: checking tag '${BACKUP_TAG}'"
 	if [ `git tag | grep -c ${BACKUP_TAG}` -eq 0 ]; then
 		# no backup was ever made, create initial bundle
-	        echo "INFO: exporting ${repoName} to ${fileName}"
-	        git bundle create ${fileName} --all
+        echo "INFO: exporting ${repoName} to ${fileName}"
+        git bundle create ${fileName} --all
 	else
 		# tag pointing to previous backup found
 
